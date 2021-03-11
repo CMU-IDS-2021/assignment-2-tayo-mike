@@ -19,7 +19,9 @@ df = load_data(Data_folder)
 st.write(df[0])
 
 #US State Background
-states = alt.topo_feature(data.us_10m.url, feature ='state')
+
+states = alt.topo_feature(data.us_10m.url, feature ='states')
+
 Background = alt.Chart(states).mark_geoshape(
     fill = 'lightgray',
     stroke = 'black'
@@ -27,5 +29,7 @@ Background = alt.Chart(states).mark_geoshape(
     width=500,
     height=300
 ).project('albersUsa')
+
+points = alt.Chart()
 
 Background

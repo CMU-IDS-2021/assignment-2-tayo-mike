@@ -11,9 +11,9 @@ def load_data(data_file, file_type):
     if file_type == 'excel':
         return pd.read_excel(data_file)
 
-df1 = load_data("health_ineq_online_table_3.csv")
-df2 = load_data("health_ineq_online_table_4.csv")
-df3 = load_data("health_ineq_online_table_5.csv")
+df1 = load_data("health_ineq_online_table_3.csv", "csv")
+df2 = load_data("health_ineq_online_table_4.csv", "csv")
+df3 = load_data("health_ineq_online_table_5.csv", "csv")
 
 st.write("Let's look at raw data in the Pandas Data Frame.")
 

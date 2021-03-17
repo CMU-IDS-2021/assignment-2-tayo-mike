@@ -61,8 +61,8 @@ c = alt.layer(a, b)
 st.altair_chart(c, use_container_width=True)
 
 agg_data.index.name = "statename"
-data = agg_data[["le_agg_q1_F", "le_agg_q2_F", "le_agg_q3_F", "le_agg_q4_F", "le_agg_q1_M", "le_agg_q2_M", "le_agg_q3_M", "le_agg_q4_M"]].reset_index().melt("statename")
-chart = alt.Chart(data).mark_line().encode(
+data_1 = agg_data[["le_agg_q1_F", "le_agg_q2_F", "le_agg_q3_F", "le_agg_q4_F", "le_agg_q1_M", "le_agg_q2_M", "le_agg_q3_M", "le_agg_q4_M"]].reset_index().melt("statename")
+chart = alt.Chart(data_1).mark_line().encode(
     x='statename',
     y='value',
     color='variable'
@@ -145,7 +145,7 @@ plot+=base.mark_point(filled=True
     
     color=alt.value("salmon"),
     shape = alt.value("diamond"),
-    legend=alt.value(legend=alt.Legend)
+    
 
 )
 
@@ -209,7 +209,7 @@ points_Female4 = base.mark_circle().encode(
       select_year   
   ).properties(title='Q4')
 
-Maps = (points_Female1 | points_Female2) & (points_Female3|points_Female4)
+Maps = (Background+points_Female1 | Background+points_Female2) & (Background+points_Female3|Background+points_Female4)
 
 st.write(Maps)
 st.write(plot)

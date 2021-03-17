@@ -79,8 +79,7 @@ chart = alt.Chart(data).mark_bar().encode(
 # st.write(agg_data)
 
 
-highlight = alt.selection(type='single', on='mouseover',
-                          fields=['symbol'], nearest=True)
+highlight = alt.selection(type='single', on='mouseover',fields=['symbol'], nearest=True)
 
 base = alt.Chart(df3).encode(
     x='year:T',

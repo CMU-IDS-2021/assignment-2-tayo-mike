@@ -75,6 +75,8 @@ chart = alt.Chart(data).mark_bar().encode(
     # color='variable',
     color=alt.condition(selector, 'variable', alt.value('lightgray')),
     tooltip=["variable",'mean(value)']
+).add_selection(
+    selector
 )
 # st.write(agg_data)
 

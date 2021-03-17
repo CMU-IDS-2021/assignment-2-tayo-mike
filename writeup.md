@@ -30,7 +30,7 @@ To break down the process:
 Akintayo Jabar - Created the repository; Led meetings and documentations; Contributed to project code
 Michael Finch - Came up with the agreed research question, conceptualized the manner of approach and provided good feedback; Contributed to project code.
 
-Man-hours spent: 25 hours
+Man-hours spent: 25 hours each (50 hours total)
 
 The team members descrbes potentual dataset and theme for the end deliverable. Then worked mostly indepented with meeting to update each other. Apprxomently 50 people-hours total for two people was spend on this project. Deveropling the map graph of the final develiable.  
 

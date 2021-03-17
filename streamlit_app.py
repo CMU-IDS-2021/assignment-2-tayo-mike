@@ -158,9 +158,9 @@ st.write(chart)
 ###
 
 ## use airport data for lat and long of map background
-airports = data.airports()
-airports = airports[["state","latitude","longitude"]]
-state_loc = airports.groupby(['state']).mean()
+# airports = data.airports()
+# airports = airports[["state","latitude","longitude"]]
+# state_loc = airports.groupby(['state']).mean()
 
 source = df3
 source["state"] = source["stateabbrv"]

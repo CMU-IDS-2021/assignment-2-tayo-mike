@@ -125,20 +125,22 @@ chart = alt.Chart(agg_data).mark_bar().encode(
 
 st.write(chart)
 
-<<<<<<< HEAD
+
 agg_data.index.name = "statename"
 data_1 = agg_data[["le_agg_q1_F", "le_agg_q2_F", "le_agg_q3_F", "le_agg_q4_F", "le_agg_q1_M", "le_agg_q2_M", "le_agg_q3_M", "le_agg_q4_M"]].reset_index().melt("statename")
 chart = alt.Chart(data_1).mark_line().encode(
     x='statename',
     y='value',
     color='variable'
-=======
+).properties(
+    width=1000,
+    height=400
+)
 chart2 = alt.Chart(agg_data).mark_bar().encode(
     x=alt.X("statename"),
     y=alt.Y("le_agg_F"),
     color="statename",
     tooltip='statename:N'
->>>>>>> 4fd7a6305922a33d63d1be48c5e9315f6e517635
 ).properties(
     width=1000,
     height=400

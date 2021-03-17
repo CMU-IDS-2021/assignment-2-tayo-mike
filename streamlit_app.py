@@ -15,7 +15,6 @@ def load_data(data_file, file_type):
 df1 = load_data("health_ineq_online_table_3.csv", "csv")
 df2 = load_data("health_ineq_online_table_4.csv", "csv")
 df3 = load_data("health_ineq_online_table_5.csv", "csv")
-# df4 = load_data("health_ineq_online_table_3_perc.csv", "csv")
 
 st.write("Here's the raw data we would be examining")
 
@@ -23,19 +22,87 @@ agg_data = df1[["statename", "le_agg_q1_F", "le_agg_q2_F", "le_agg_q3_F", "le_ag
 agg_data["le_agg_F"] = agg_data[["le_agg_q1_F", "le_agg_q2_F", "le_agg_q3_F", "le_agg_q4_F"]].mean(axis=1)
 agg_data["le_agg_M"] = agg_data[["le_agg_q1_M", "le_agg_q2_M", "le_agg_q3_M", "le_agg_q4_M"]].mean(axis=1)
 
-# st.write(df1)
-# st.write(df2)
+fin_data = agg_data[["statename", "le_agg_F", "le_agg_M"]]
+
+le_timeseries_for_states = {}
+states = agg_data["statename"]
+for state in states:
+    state_data = df3[df3["statename"] == state]
+    state_data["le_agg_F"] = state_data[["le_agg_q1_F", "le_agg_q2_F", "le_agg_q3_F", "le_agg_q4_F"]].mean(axis=1)
+    state_data["le_agg_M"] = state_data[["le_agg_q1_M", "le_agg_q2_M", "le_agg_q3_M", "le_agg_q4_M"]].mean(axis=1)
+    state_data = state_data[["year", "le_agg_F", "le_agg_M"]]
+    le_timeseries_for_states[state] = state_data
+
+alabama = le_timeseries_for_states['Alabama']
+alabama = alabama.melt('year')
+
+st.write(alt.Chart(alabama).mark_line().encode(
+    x='year:O',
+    y='value',
+    color='variable:N',
+    # column='site:N'
+)
+)
+
+st.write ("Here's our raw data")
 st.write(agg_data)
+st.write("\n")
+st.write(df3)
 
-# st.write("Hmm 🤔, is there some correlation between body mass and flipper length? Let's make a scatterplot with [Altair](https://altair-viz.github.io/) to find.")
+st.write("Let's see the life expectancy for each state - Male and Female at a glance")
 
-# chart = alt.Chart(agg_data).mark_point().encode(
-#     x=alt.X("statename", scale=alt.Scale(zero=False)),
-#     y=alt.Y("le_agg_F", scale=alt.Scale(zero=False)),
-#     color=alt.Y("statename")
-# ).properties(
-#     width=600, height=400
-# ).interactive()
+# agg_data.index.name = "statename"
+data = agg_data[["statename", "le_agg_q1_F", "le_agg_q2_F", "le_agg_q3_F", "le_agg_q4_F", "le_agg_q1_M", "le_agg_q2_M", "le_agg_q3_M", "le_agg_q4_M"]].melt("statename")
+chart = alt.Chart(data).mark_bar().encode(
+    x=alt.X('statename', title="States"),
+    y=alt.Y('sum(value)', title="Life Expectancy at Income Quartiles"),
+    color='variable',
+    tooltip='mean(value)'
+).properties(
+    width=1000,
+    height=400
+)
+
+st.write(chart)
+
+
+
+st.write ("Next, we see the average life expectancy across all income quartiles by gender")
+
+options = []
+options = list(agg_data["statename"])
+
+input_dropdown = alt.binding_select(options=options)
+selection = alt.selection_single(fields=['statename'], bind=input_dropdown, name='statename')
+color = alt.condition(selection,
+                    alt.Color('statename:N', legend=None),
+                    alt.value('lightgray'))
+
+chart = alt.Chart(agg_data).mark_bar().encode(
+    x=alt.X("statename"),
+    y=alt.Y("le_agg_M"),
+    color="statename",
+    tooltip='statename:N'
+).properties(
+    width=1000,
+    height=400
+)
+
+st.write(chart)
+
+chart2 = alt.Chart(agg_data).mark_bar().encode(
+    x=alt.X("statename"),
+    y=alt.Y("le_agg_F"),
+    color="statename",
+    tooltip='statename:N'
+).properties(
+    width=1000,
+    height=400
+)
+
+st.write(chart2)
+
+####### Chart 2############
 
 highlight = alt.selection(type='single', on='mouseover',
                           fields=['symbol'], nearest=True)
@@ -52,33 +119,14 @@ points = base.mark_circle().encode(
     highlight
 ).properties(
     width=600
+).interactive().add_selection(
+    selection
 )
 
 lines = base.mark_line().encode(
     size=alt.condition(~highlight, alt.value(1), alt.value(3))
+).interactive().add_selection(
+    selection
 )
 
 st.write(points + lines)
-
-a = alt.Chart(agg_data).mark_line(color='blue').encode(
-    x='statename', y='le_agg_F')
-
-b = alt.Chart(agg_data).mark_line(color='red').encode(
-    x='statename', y='le_agg_M')
-
-c = alt.layer(a, b)
-
-st.altair_chart(c, use_container_width=True)
-
-agg_data.index.name = "statename"
-data = agg_data[["le_agg_q1_F", "le_agg_q2_F", "le_agg_q3_F", "le_agg_q4_F", "le_agg_q1_M", "le_agg_q2_M", "le_agg_q3_M", "le_agg_q4_M"]].reset_index().melt("statename")
-chart = alt.Chart(data).mark_line().encode(
-    x='statename',
-    y='value',
-    color='variable'
-).properties(
-    width=1000,
-    height=400
-)
-
-st.write(chart)

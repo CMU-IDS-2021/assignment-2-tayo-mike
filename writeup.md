@@ -1,7 +1,7 @@
 # Social Mobility: Looking at the effect of Income on Life Expectancy 
 
 ![A screenshot of your application. Could be a GIF.](visualization.png)
-![A screenshot of your application. Could be a GIF.](visualization_2.png)
+![A screenshot of your application. Could be a GI.](visualization_2.png)
 
 ## Project Goals
 
